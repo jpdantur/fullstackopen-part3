@@ -1,3 +1,4 @@
+"use strict";
 const express = require("express");
 const app = express();
 
@@ -28,6 +29,23 @@ let persons = [
 
 app.get("/api/persons", (req, res) => {
   res.json(persons);
+});
+
+app.get("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const person = persons.find((person) => person.id === id);
+  if (person) {
+    res.json(person);
+  } else {
+    res.status(404).end();
+  }
+});
+
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  persons = persons.filter((person) => person.id !== id);
+
+  response.status(204).end();
 });
 
 app.get("/info", (req, res) => {
